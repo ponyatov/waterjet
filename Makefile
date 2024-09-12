@@ -4,6 +4,9 @@ REL    = $(shell git rev-parse --short=4    HEAD)
 BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
 NOW    = $(shell date +%d%m%y)
 
+# cross
+TARGET = i686-pc-windows-gnu
+
 # dir
 CWD = $(CURDIR)
 CAR = $(HOME)/.cargo/bin
@@ -42,10 +45,18 @@ $(HOME)/doc/Rust/The_Rust_Programming_Language.pdf:
 # install
 .PHONY: install update ref gz
 install: doc ref gz
-	$(MAKE) update
+	sudo dpkg --add-architecture i386
+	$(MAKE) update rust
 update: $(RUSTUP)
 	sudo apt update
-	sudo apt install `cat apt.txt`
-# $(RUSTUP) self update ; $(RUSTUP) update
+	sudo apt install -uy `cat apt.txt`
+	$(RUSTUP) self update ; $(RUSTUP) update
 ref:
 gz:
+
+.PHONY: rust
+rust: $(RUSTUP)
+	$(RUSTUP) component add rustfmt
+	$(RUSTUP) target add $(TARGET)
+$(RUSTUP):
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
