@@ -1,0 +1,9 @@
+[package]
+name        = "waterjet"
+description = "waterjet controller"
+authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
+version     = "0.0.1"
+repository  = "https://github.com/ponyatov/waterjet"
+edition     = "2021"
+
+[dependencies]
