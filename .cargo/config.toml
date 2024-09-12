@@ -1,0 +1,5 @@
+[target.i686-pc-windows-gnu]
+runner = "wine32"
+
+[build]
+target = "i686-pc-windows-gnu"
