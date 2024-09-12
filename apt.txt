@@ -1,5 +1,4 @@
 git make curl
 code meld doxygen clang-format
-mingw-w64-i686-dev gcc-mingw-w64-i686-win32
+mingw-w64-i686-dev gcc-mingw-w64-i686-win32 wine32
 build-essential flex bison ragel
-wine32

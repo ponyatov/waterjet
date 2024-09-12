@@ -24,8 +24,7 @@ R += $(wildcard src/*.rs)
 .PHONY: run all
 all: bin/$(MODULE)
 run: lib/$(MODULE).ini $(R)
-	$(CARGO) run -- $<
-# RUST_BACKTRACE=1
+	$(CARGO) run --target $(TARGET) -- $<
 
 # format
 .PHONY: format
