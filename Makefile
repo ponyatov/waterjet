@@ -7,15 +7,29 @@ NOW    = $(shell date +%d%m%y)
 # cross
 TARGET = i686-pc-windows-gnu
 
+# version
+DEBIAN_VER = 12.7.0
+
 # dir
-CWD = $(CURDIR)
-CAR = $(HOME)/.cargo/bin
+CWD   = $(CURDIR)
+CAR   = $(HOME)/.cargo/bin
+GZ    = $(HOME)/gz
+DISTR = $(HOME)/distr
+
+.PHONY: dirs
+dirs:
+	mkdir -p $(GZ) $(DISTR) \
+		$(DISTR)/Linux $(DISTR)/Linux/Debian \
+		$(DISTR)/Linux/Debian/i386
 
 # tool
 CURL   = curl -L -o
 RUSTUP = $(CAR)/rustup
 CARGO  = $(CAR)/cargo
 GITREF = git clone --depth 1
+
+# package
+DEBIAN_ISO = debian-$(DEBIAN_VER)-i386-netinst.iso
 
 # src
 R += $(wildcard src/*.rs)
@@ -43,7 +57,7 @@ $(HOME)/doc/Rust/The_Rust_Programming_Language.pdf:
 
 # install
 .PHONY: install update ref gz
-install: doc ref gz
+install: dirs doc ref gz
 	sudo dpkg --add-architecture i386
 	$(MAKE) update rust
 update: $(RUSTUP)
@@ -51,7 +65,7 @@ update: $(RUSTUP)
 	sudo apt install -uy `cat apt.txt`
 	$(RUSTUP) self update ; $(RUSTUP) update
 ref:
-gz:
+gz: $(DISTR)/Linux/Debian/i386/$(DEBIAN_ISO)
 
 .PHONY: rust
 rust: $(RUSTUP)
@@ -59,3 +73,6 @@ rust: $(RUSTUP)
 	$(RUSTUP) target add $(TARGET)
 $(RUSTUP):
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+$(DISTR)/Linux/Debian/i386/$(DEBIAN_ISO):
+	$(CURL) $@ https://mirror.yandex.ru/debian-cd/current/i386/iso-cd/$(DEBIAN_ISO)
