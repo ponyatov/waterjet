@@ -30,6 +30,7 @@ GITREF = git clone --depth 1
 
 # package
 DEBIAN_ISO = debian-$(DEBIAN_VER)-i386-netinst.iso
+DEBIAN_URL = https://mirror.yandex.ru/debian-cd/current/i386/iso-cd
 
 # src
 R += $(wildcard src/*.rs)
@@ -75,4 +76,4 @@ $(RUSTUP):
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 $(DISTR)/Linux/Debian/i386/$(DEBIAN_ISO):
-	$(CURL) $@ https://mirror.yandex.ru/debian-cd/current/i386/iso-cd/$(DEBIAN_ISO)
+	$(CURL) $@ $(DEBIAN_URL)/$(DEBIAN_ISO)
